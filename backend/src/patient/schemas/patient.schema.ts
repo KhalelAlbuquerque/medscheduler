@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 @Schema()
-export class Doctor extends Document{
+export class Patient extends Document {
     @Prop()
     name: string;
 
@@ -10,19 +10,17 @@ export class Doctor extends Document{
     email: string;
 
     @Prop()
-    password: string;
-
-    @Prop()
-    speciality: string;
-
-    @Prop({unique: true})
-    med_code: string
+    password: string
 
     @Prop()
     phoneNumber: string
 
-    @Prop({default: "doctor"})
+    @Prop({unique: true})
+    ssnOrCpf: string
+
+    @Prop({default: "patient"})
     role: string
 }
 
-export const DoctorSchema = SchemaFactory.createForClass(Doctor);
+
+export const PatientSchema = SchemaFactory.createForClass(Patient)

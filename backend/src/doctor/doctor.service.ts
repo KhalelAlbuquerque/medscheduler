@@ -9,7 +9,7 @@ import { Doctor } from './schemas/doctor.schema';
 @Injectable()
 export class DoctorService {
 
-  constructor(@InjectModel("Doctor") private readonly doctorModel: Model<Doctor>) {}
+  constructor(@InjectModel(Doctor.name) private readonly doctorModel: Model<Doctor>) {}
 
   async create(createDoctorDto: CreateDoctorDto) {
 
@@ -48,6 +48,7 @@ export class DoctorService {
     if(updateDoctorDto?.med_code) foundDoctor.med_code = updateDoctorDto.med_code
     if(updateDoctorDto?.name) foundDoctor.name = updateDoctorDto.name
     if(updateDoctorDto?.speciality) foundDoctor.speciality = updateDoctorDto.speciality
+    if(updateDoctorDto?.phoneNumber) foundDoctor.phoneNumber = updateDoctorDto.phoneNumber
 
     await foundDoctor.save()
 

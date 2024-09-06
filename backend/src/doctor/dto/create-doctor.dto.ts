@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsEmpty, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateDoctorDto {
     
@@ -6,7 +6,7 @@ export class CreateDoctorDto {
     @IsNotEmpty()
     name: string;
     
-    @IsEmail({}, {message:"Please insert a valid email"})
+    @IsEmail({}, {message:"Please enter a valid email"})
     @IsNotEmpty()
     email: string;
 
@@ -16,9 +16,16 @@ export class CreateDoctorDto {
 
     @IsString()
     @IsNotEmpty()
+    phoneNumber: string;
+
+    @IsString()
+    @IsNotEmpty()
     speciality: string;
 
     @IsString()
     @IsNotEmpty()
     med_code: string
+
+    @IsEmpty()
+    role: string
 }
