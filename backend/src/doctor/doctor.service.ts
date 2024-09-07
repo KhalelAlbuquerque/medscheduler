@@ -11,7 +11,7 @@ export class DoctorService {
 
   constructor(@InjectModel(Doctor.name) private readonly doctorModel: Model<Doctor>) {}
 
-  async create(createDoctorDto: CreateDoctorDto) {
+  async create(createDoctorDto: CreateDoctorDto) : Promise<Doctor> {
 
     const {med_code, email} = createDoctorDto
 
@@ -29,11 +29,11 @@ export class DoctorService {
     return newDoctor;
   }
 
-  async findAll() {
+  async findAll() : Promise<Doctor[]> {
     return this.doctorModel.find().exec();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string) : Promise<Doctor> {
     const foundDoctor = await this.doctorModel.findOne({_id: id}).exec()
 
     if(!foundDoctor) throw new NotFoundException("Doctor not found")
@@ -41,7 +41,7 @@ export class DoctorService {
     return foundDoctor
   }
 
-  async findByEmail(email: string){
+  async findByEmail(email: string) : Promise<Doctor>{
     const foundDoctor = await this.doctorModel.findOne({email}).select("+password").exec()
 
     if(!foundDoctor) throw new NotFoundException("Doctor not found")
@@ -49,7 +49,7 @@ export class DoctorService {
     return foundDoctor
   }
 
-  async update(id: string, updateDoctorDto: UpdateDoctorDto) {
+  async update(id: string, updateDoctorDto: UpdateDoctorDto) : Promise<Doctor>{
     const foundDoctor = await this.findOne(id)
 
     if(updateDoctorDto?.email) foundDoctor.email = updateDoctorDto.email
@@ -63,7 +63,7 @@ export class DoctorService {
     return foundDoctor;
   }
 
-  async remove(id: string) {
+  async remove(id: string) : Promise<void> {
     const foundDoctor = await this.findOne(id)
 
     await this.doctorModel.findByIdAndDelete(id)

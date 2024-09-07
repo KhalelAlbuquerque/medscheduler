@@ -20,11 +20,11 @@ export class AppointmentService {
     return 'This action adds a new appointment';
   }
 
-  async findAll() {
+  async findAll() : Promise<Appointment[]> {
     return await this.appointmentModel.find().exec();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string) : Promise<Appointment> {
     const foundAppointment : Appointment  = await this.appointmentModel.findOne({_id: id}).exec()
 
     if(!foundAppointment) throw new NotFoundException("Appointment not found")
@@ -32,7 +32,7 @@ export class AppointmentService {
     return foundAppointment
   }
 
-  async update(id: string, updateAppointmentDto: UpdateAppointmentDto) {
+  async update(id: string, updateAppointmentDto: UpdateAppointmentDto) : Promise<Appointment> {
     const foundAppointment : Appointment  = await this.findOne(id)
 
     if(updateAppointmentDto?.doctor) foundAppointment.doctor = updateAppointmentDto.doctor
@@ -44,7 +44,7 @@ export class AppointmentService {
     return await foundAppointment.save()
   }
 
-  async remove(id: string) {
+  async remove(id: string) : Promise<void> {
     const foundAppointment : Appointment | undefined = await this.findOne(id)
 
     if(!foundAppointment) throw new NotFoundException("Appointment not found")
@@ -52,7 +52,7 @@ export class AppointmentService {
       return await this.appointmentModel.findByIdAndDelete(id)
   }
 
-  async changeStatus(id: string, userId: string, newStatus: Status){
+  async changeStatus(id: string, userId: string, newStatus: Status) : Promise<Appointment>{
     const foundAppointment : Appointment | undefined = await this.findOne(id) 
 
     if(foundAppointment.patient!=userId && foundAppointment.doctor!=userId){

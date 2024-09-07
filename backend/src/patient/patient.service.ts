@@ -15,7 +15,7 @@ export class PatientService {
     @InjectModel(Appointment.name) private readonly appointmentModel:Model<Appointment>
   ){}
 
-  async create(createPatientDto: CreatePatientDto) {
+  async create(createPatientDto: CreatePatientDto) : Promise<Patient> {
     
     const {email, ssnOrCpf} = createPatientDto
 
@@ -33,11 +33,11 @@ export class PatientService {
     return newPatient
   }
 
-  async findAll() {
+  async findAll() : Promise<Patient[]> {
     return await this.patientModel.find().exec();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string) : Promise<Patient> {
     const patient: Patient | undefined = await this.patientModel.findOne({_id: id})
 
     if(!patient) throw new NotFoundException("Patient not found")
@@ -45,7 +45,7 @@ export class PatientService {
     return patient
   }
 
-  async findByEmail(email: string){
+  async findByEmail(email: string) : Promise<Patient>{
     const foundPatient = await this.patientModel.findOne({email}).select("+password").exec()
 
     if(!foundPatient) throw new NotFoundException("Patient not found")
@@ -53,7 +53,7 @@ export class PatientService {
     return foundPatient
   }
 
-  async update(id: string, updatePatientDto: UpdatePatientDto) {
+  async update(id: string, updatePatientDto: UpdatePatientDto) : Promise<Patient> {
     const patient: Patient = await this.findOne(id)
 
     if(updatePatientDto?.email) patient.email = updatePatientDto.email
@@ -64,13 +64,13 @@ export class PatientService {
     return await patient.save()
   }
 
-  async remove(id: string) {
+  async remove(id: string) : Promise<void> {
     const patient: Patient = await this.findOne(id)
 
     return await this.patientModel.findByIdAndDelete(patient._id);
   }
 
-  async scheduleAppointment(createAppointmentDto: CreateAppointmentDto){
+  async scheduleAppointment(createAppointmentDto: CreateAppointmentDto) : Promise<Appointment>{
     const {patient, doctor, date, time} = createAppointmentDto
 
     const isAlreadyScheduled = await this.appointmentModel.findOne({patient, doctor, date, time}).exec()
