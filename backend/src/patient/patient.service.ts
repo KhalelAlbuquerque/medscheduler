@@ -71,9 +71,9 @@ export class PatientService {
   }
 
   async scheduleAppointment(createAppointmentDto: CreateAppointmentDto){
-    const {patient, doctor} = createAppointmentDto
+    const {patient, doctor, date, time} = createAppointmentDto
 
-    const isAlreadyScheduled = await this.appointmentModel.findOne({patient, doctor}).exec()
+    const isAlreadyScheduled = await this.appointmentModel.findOne({patient, doctor, date, time}).exec()
 
     if(isAlreadyScheduled) throw new BadRequestException("Already scheduled")
 
