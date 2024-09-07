@@ -4,6 +4,7 @@ import { UpdatePatientDto } from './dto/update-patient.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Patient } from './schemas/patient.schema';
+import * as bcrypt from "bcrypt"
 
 @Injectable()
 export class PatientService {
@@ -17,6 +18,10 @@ export class PatientService {
     const matchedSSN = await this.patientModel.findOne({ssnOrCpf}).exec()
 
     if(matchedEmail || matchedSSN) throw new BadRequestException("Duplicated email or SSN/CPF")
+
+    const hashedPassword = await bcrypt.hash(createPatientDto.password, 10)
+
+    createPatientDto.password = hashedPassword
 
     const newPatient = await this.patientModel.create(createPatientDto)
 
@@ -34,6 +39,14 @@ export class PatientService {
     if(!patient) throw new NotFoundException("Patient not found")
 
     return patient
+  }
+
+  async findByEmail(email: string){
+    const foundPatient = await this.patientModel.findOne({email}).exec()
+
+    if(!foundPatient) throw new NotFoundException("Patient not found")
+
+    return foundPatient
   }
 
   async update(id: string, updatePatientDto: UpdatePatientDto) {

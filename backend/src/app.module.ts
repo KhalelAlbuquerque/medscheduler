@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PatientModule } from './patient/patient.module';
 import { AppointmentModule } from './appointment/appointment.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { AppointmentModule } from './appointment/appointment.module';
     }),
     MongooseModule.forRoot(process.env.DATABASE_CONN_URL),
     PatientModule,
-    AppointmentModule
+    AppointmentModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
