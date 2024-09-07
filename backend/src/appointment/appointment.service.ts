@@ -7,6 +7,7 @@ import { Appointment } from './schemas/appointment.schema';
 import { PatientService } from 'src/patient/patient.service';
 import { DoctorService } from 'src/doctor/doctor.service';
 import { Status } from './enum/status.enum';
+import { Role } from 'src/auth/enum/roles.enum';
 
 @Injectable()
 export class AppointmentService {
@@ -73,5 +74,31 @@ export class AppointmentService {
     await foundAppointment.save()
 
     return foundAppointment
+  }
+
+  async getAppointments(role: Role, userId: string): Promise<Appointment[]> {
+    let mainService;
+    let userField;
+    let populateField
+  
+    if (role === Role.DOCTOR) {
+      mainService = this.doctorService;
+      userField = 'doctor';
+      populateField = 'patient';
+    } else if (role === Role.PATIENT) {
+      mainService = this.patientService;
+      userField = 'patient';
+      populateField = 'doctor';
+    }
+  
+    const foundUser = await mainService.findOne(userId);
+  
+    if (!foundUser) throw new NotFoundException("User not found");
+  
+    const appointments = await this.appointmentModel
+      .find({ [userField]: foundUser._id })
+      .populate(populateField)
+  
+    return appointments;
   }
 }

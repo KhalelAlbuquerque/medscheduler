@@ -22,6 +22,15 @@ export class AppointmentController {
     return this.appointmentService.findAll();
   }
 
+  @Get("getall")
+  @UseGuards(AuthGuard("jwt"))
+  getAllAppointments(@Req() request) {
+    const userId = request.user.id
+    const role = request.user.role
+
+    return this.appointmentService.getAppointments(role, userId)
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.appointmentService.findOne(id);
@@ -31,6 +40,7 @@ export class AppointmentController {
   update(@Param('id') id: string, @Body() updateAppointmentDto: UpdateAppointmentDto) {
     return this.appointmentService.update(id, updateAppointmentDto);
   }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
@@ -72,4 +82,6 @@ export class AppointmentController {
 
     return this.appointmentService.changeStatus(appointmentId, userId, Status.CANCELED)
   }
+
+
 }

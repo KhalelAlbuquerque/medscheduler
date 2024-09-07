@@ -9,7 +9,7 @@ export class Doctor extends Document{
     @Prop({unique: true})
     email: string;
 
-    @Prop()
+    @Prop({select: false})
     password: string;
 
     @Prop()

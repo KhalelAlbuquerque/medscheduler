@@ -42,7 +42,7 @@ export class DoctorService {
   }
 
   async findByEmail(email: string){
-    const foundDoctor = await this.doctorModel.findOne({email}).exec()
+    const foundDoctor = await this.doctorModel.findOne({email}).select("+password").exec()
 
     if(!foundDoctor) throw new NotFoundException("Doctor not found")
 
