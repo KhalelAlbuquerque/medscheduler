@@ -3,6 +3,9 @@ import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/auth/enum/roles.enum';
 
 @Controller('doctor')
 export class DoctorController {
@@ -14,7 +17,8 @@ export class DoctorController {
   }
 
   @Get()
-  @UseGuards(AuthGuard("jwt"))
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard("jwt"), RoleGuard)
   findAll() {
     return this.doctorService.findAll();
   }

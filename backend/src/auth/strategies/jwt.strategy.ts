@@ -5,6 +5,7 @@ import { Model } from "mongoose";
 import {Strategy, ExtractJwt} from "passport-jwt"
 import { Doctor } from "src/doctor/schemas/doctor.schema";
 import { Patient } from "src/patient/schemas/patient.schema";
+import { Role } from "../enum/roles.enum";
 
 
 @Injectable()
@@ -28,9 +29,9 @@ export class JwtStrategy extends PassportStrategy(Strategy){
         }
     
         if (isDoctor) {
-            return { id: isDoctor._id, role: 'doctor' };
+            return { id: isDoctor._id, role: Role.DOCTOR };
         } else if (isPatient) {
-            return { id: isPatient._id, role: 'patient' };
+            return { id: isPatient._id, role: Role.PATIENT };
         }
     }
 
