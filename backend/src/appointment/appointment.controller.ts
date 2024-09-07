@@ -1,7 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from 'src/auth/guards/roles.guard';
+import { Role } from 'src/auth/enum/roles.enum';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Status } from './enum/status.enum';
 
 @Controller('appointment')
 export class AppointmentController {
@@ -30,5 +35,41 @@ export class AppointmentController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.appointmentService.remove(id);
+  }
+
+  @Post("approve/:id")
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  approveAppointment(@Req() request, @Param("id") appointmentId){
+    const userId = request.user.id
+
+    return this.appointmentService.changeStatus(appointmentId, userId, Status.APPROVED)
+  }
+
+  @Post("reject/:id")
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  recuseAppointment(@Req() request, @Param("id") appointmentId){
+    const userId = request.user.id
+
+    return this.appointmentService.changeStatus(appointmentId, userId, Status.REJECTED)
+  }
+
+  @Post("complete/:id")
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  completeAppointment(@Req() request, @Param("id") appointmentId){
+    const userId = request.user.id
+
+    return this.appointmentService.changeStatus(appointmentId, userId, Status.COMPLETED)
+  }
+
+  @Post("cancel/:id")
+  @Roles(Role.DOCTOR)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  cancelAppointment(@Req() request, @Param("id") appointmentId){
+    const userId = request.user.id
+
+    return this.appointmentService.changeStatus(appointmentId, userId, Status.CANCELED)
   }
 }

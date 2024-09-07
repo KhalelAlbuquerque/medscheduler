@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { Appointment } from './schemas/appointment.schema';
 import { PatientService } from 'src/patient/patient.service';
 import { DoctorService } from 'src/doctor/doctor.service';
+import { Status } from './enum/status.enum';
 
 @Injectable()
 export class AppointmentService {
@@ -48,5 +49,29 @@ export class AppointmentService {
     if(!foundAppointment) throw new NotFoundException("Appointment not found")
 
       return await this.appointmentModel.findByIdAndDelete(id)
+  }
+
+  async changeStatus(id: string, userId: string, newStatus: Status){
+    const foundAppointment : Appointment | undefined = await this.findOne(id) 
+
+    if(foundAppointment.patient!=userId && foundAppointment.doctor!=userId){
+      throw new UnauthorizedException("Only the doctor or the patient can change the status of the appointment")
+    }
+
+    if(foundAppointment.status==newStatus) throw new BadRequestException("Appointment already in this status")
+
+    if(
+       foundAppointment.status==Status.CANCELED || 
+       foundAppointment.status==Status.COMPLETED || 
+       foundAppointment.status == Status.REJECTED
+      ){
+      throw new BadRequestException("This appointment status cannot be changed anymore")
+    }
+
+    foundAppointment.status = newStatus
+
+    await foundAppointment.save()
+
+    return foundAppointment
   }
 }
