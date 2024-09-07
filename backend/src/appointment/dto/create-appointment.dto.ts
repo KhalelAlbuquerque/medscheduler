@@ -17,7 +17,7 @@ export class CreateAppointmentDto {
     time: string
 
     @IsEmpty()
-    status: Status
+    status?: Status
 
     notes?: string
 }

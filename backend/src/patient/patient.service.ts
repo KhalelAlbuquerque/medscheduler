@@ -5,10 +5,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Patient } from './schemas/patient.schema';
 import * as bcrypt from "bcrypt"
+import { CreateAppointmentDto } from 'src/appointment/dto/create-appointment.dto';
+import { Appointment } from 'src/appointment/schemas/appointment.schema';
 
 @Injectable()
 export class PatientService {
-  constructor(@InjectModel(Patient.name) private readonly patientModel:Model<Patient>){}
+  constructor(
+    @InjectModel(Patient.name) private readonly patientModel:Model<Patient>,
+    @InjectModel(Appointment.name) private readonly appointmentModel:Model<Appointment>
+  ){}
 
   async create(createPatientDto: CreatePatientDto) {
     
@@ -26,7 +31,6 @@ export class PatientService {
     const newPatient = await this.patientModel.create(createPatientDto)
 
     return newPatient
-
   }
 
   async findAll() {
@@ -64,5 +68,17 @@ export class PatientService {
     const patient: Patient = await this.findOne(id)
 
     return await this.patientModel.findByIdAndDelete(patient._id);
+  }
+
+  async scheduleAppointment(createAppointmentDto: CreateAppointmentDto){
+    const {patient, doctor} = createAppointmentDto
+
+    const isAlreadyScheduled = await this.appointmentModel.findOne({patient, doctor}).exec()
+
+    if(isAlreadyScheduled) throw new BadRequestException("Already scheduled")
+
+    const newSchedule = await this.appointmentModel.create(createAppointmentDto)
+
+    return newSchedule
   }
 }
