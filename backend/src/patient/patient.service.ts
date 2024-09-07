@@ -16,7 +16,6 @@ export class PatientService {
   ){}
 
   async create(createPatientDto: CreatePatientDto) : Promise<Patient> {
-    
     const {email, ssnOrCpf} = createPatientDto
 
     const matchedEmail = await this.patientModel.findOne({email}).exec()
