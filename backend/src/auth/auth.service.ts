@@ -5,6 +5,8 @@ import { PatientService } from 'src/patient/patient.service';
 import { DoctorService } from 'src/doctor/doctor.service';
 import { Role } from './enum/roles.enum';
 import * as bcrypt from "bcrypt"
+import { CreatePatientDto } from 'src/patient/dto/create-patient.dto';
+import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,6 +45,26 @@ export class AuthService {
         const token = this.jwtService.sign({id: doctor._id, role: Role.DOCTOR})
 
         return {token}
+    }
+
+    async patientRegister(createPatientDto: CreatePatientDto): Promise<{token:string}>{
+        const newPatient = await this.patientService.create(createPatientDto)
+
+        if(newPatient){
+            const token = this.jwtService.sign({id: newPatient._id, role: Role.PATIENT})
+
+            return {token}
+        }
+    }
+
+    async doctorRegister(createDoctorDto: CreateDoctorDto): Promise<{token:string}>{
+        const newDoctor = await this.doctorService.create(createDoctorDto)
+
+        if(newDoctor){
+            const token = this.jwtService.sign({id: newDoctor._id, role: Role.DOCTOR})
+
+            return {token}
+        }
     }
 
 }
