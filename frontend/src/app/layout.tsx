@@ -8,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className="bg-[#bbdefb]">
+      <body className="bg-[#d1dee8]">
         <Providers>{children}</Providers>
       </body>
     </html>

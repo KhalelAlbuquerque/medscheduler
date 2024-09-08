@@ -80,7 +80,7 @@ const LoginForm = () => {
         </Button>
       </Box>
 
-      <p>Don't have an account? <Link className="text-[#577cff] font-bold underline" href={"#"}>Sign up</Link></p>
+      <p>Don't have an account? <Link className="text-[#577cff] font-bold underline" href={"/signup"}>Sign up</Link></p>
     </Box>
   );
 };
