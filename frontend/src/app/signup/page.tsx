@@ -1,4 +1,3 @@
-import LoginForm from "@/components/LoginForm/page";
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import bgLogin from "../../../public/image/bg-login.jpeg";
