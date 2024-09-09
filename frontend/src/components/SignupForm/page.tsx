@@ -39,7 +39,7 @@ const SignupForm = () => {
       flexDir="column"
       alignItems={"center"}
       justifyContent={"center"}
-      gap={50}
+      gap={5}
       p={6}
       bg="#faf9f6"
       maxW={1000}

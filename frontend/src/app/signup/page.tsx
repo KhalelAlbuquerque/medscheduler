@@ -5,7 +5,7 @@ import SignupForm from "@/components/SignupForm/page";
 
 const SignupPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen">
+    <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-80px)]">
       <Box
         display={"flex"}
         w={{ base: "90%", sm: "80%", md: "80%", xl: "70%" }}

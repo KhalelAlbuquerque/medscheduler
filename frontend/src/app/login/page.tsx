@@ -5,7 +5,7 @@ import bgLogin from "../../../public/image/bg-login.jpeg";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen">
+    <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-80px)]">
       <Box
         display={"flex"}
         w={{ base: "90%", sm: "80%", md: "80%", xl: "70%" }}
