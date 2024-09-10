@@ -29,6 +29,10 @@ const Header = () => {
     
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      const footer = document.querySelector("footer");
+      if (footer) {
+        footer.style.display = "none";
+      }
     };
   }, [isOpen]);
 
@@ -89,7 +93,7 @@ const Header = () => {
 
       {isOpen && (
         <Box
-          ref={menuRef} // Conectando o menuRef à caixa de menu
+          ref={menuRef}
           position="absolute"
           top="80px"
           className="bg-white p-4 rounded-b-lg shadow-t-lg z-10 w-[55%] sm:w-[40%] flex md:hidden"

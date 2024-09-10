@@ -42,10 +42,10 @@ const SignupForm = () => {
       gap={5}
       p={6}
       bg="#faf9f6"
-      maxW={1000}
+      maxW={1000} 
       boxShadow="2xl"
-      w={"50%"}
-      className="rounded-r-lg"
+      w={{sm: "100%", md: "50%"}}
+      className="sm:rounded-r-lg sm:rounded-l-none rounded-b-lg gap-[10px] sm:gap-[50px]"
     >
       <Heading as="h1" size="lg" mb={2} textAlign="center">
         Sign up
@@ -113,7 +113,7 @@ const SignupForm = () => {
         </Button>
       </Box>
 
-      <p>
+      <p className="mt-4 sm:mt-0">
         Already have an account?{" "}
         <Link className="text-[#577cff] font-bold underline" href={"/login"}>
           Login

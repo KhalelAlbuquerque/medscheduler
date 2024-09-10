@@ -30,13 +30,12 @@ const LoginForm = () => {
       flexDir="column"
       alignItems={"center"}
       justifyContent={"center"}
-      gap={50}
       p={6}
       bg="#faf9f6"
       maxW={1000}
       boxShadow="2xl"
-      w={"50%"}
-      className="rounded-r-lg"
+      w={{sm: "100%", md: "50%"}}
+      className="sm:rounded-r-lg sm:rounded-l-none rounded-b-lg gap-[10px] sm:gap-[50px]"
     >
       <Heading as="h1" size="lg" mb={2} textAlign="center">
         Login
@@ -80,7 +79,7 @@ const LoginForm = () => {
         </Button>
       </Box>
 
-      <p>Don't have an account? <Link className="text-[#577cff] font-bold underline" href={"/signup"}>Sign up</Link></p>
+      <p className="mt-4 sm:mt-0">Don't have an account? <Link className="text-[#577cff] font-bold underline" href={"/signup"}>Sign up</Link></p>
     </Box>
   );
 };

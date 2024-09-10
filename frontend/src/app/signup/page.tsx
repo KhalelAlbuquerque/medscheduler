@@ -7,22 +7,20 @@ const SignupPage = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-80px)]">
       <Box
-        display={"flex"}
+        className="flex flex-col sm:flex-row"
         w={{ base: "90%", sm: "80%", md: "80%", xl: "70%" }}
-        m="auto"
         h={"80%"}
       >
         <Box
-          h="100%"
-          w={"50%"}
+          w={{ sm: "100%", md: "50%" }}
           bgImage={`url(${bgLogin.src})`}
           bgPosition="center"
           bgRepeat="no-repeat"
           bgSize="cover"
-          className="rounded-l-lg"
+          className="rounded-t-lg  sm:rounded-l-lg h-[200px] sm:h-full shadow-lg"
         ></Box>
 
-        <SignupForm/>
+        <SignupForm />
       </Box>
     </div>
   );
