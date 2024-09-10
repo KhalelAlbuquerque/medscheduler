@@ -5,10 +5,12 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import logo from "../../../public/image/main-logo.png";
 import { BiMenu, BiX } from "react-icons/bi";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -26,15 +28,19 @@ const Header = () => {
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       const footer = document.querySelector("footer");
       if (footer) {
-        footer.style.display = "none";
+        if (pathname === "/login" || pathname === "/signup") {
+          footer.style.display = "none";
+        } else {
+          footer.style.display = "block";
+        }
       }
     };
-  }, [isOpen]);
+  }, [isOpen, pathname]);
 
   return (
     <Box
@@ -59,7 +65,7 @@ const Header = () => {
           <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
             About us
           </Link>
-          <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
+          <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
             Doctors
           </Link>
           <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
@@ -117,11 +123,11 @@ const Header = () => {
             <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
               About us
             </Link>
-            <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
+            <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
               Doctors
             </Link>
             <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
-              SchedListe
+              Schedule
             </Link>
             <Link
               href="login"

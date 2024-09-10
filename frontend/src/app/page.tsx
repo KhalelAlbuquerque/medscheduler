@@ -34,6 +34,7 @@ export default function Home() {
             alignItems="center"
             height="100%"
             p={8}
+            margin={{base: "auto", md: "0"}}
             borderRadius="lg"
           >
             <Heading
