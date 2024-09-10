@@ -23,6 +23,7 @@ export default function Home() {
           width="100%"
           height="100%"
           minHeight={600}
+          className="flex items-center"
           bgGradient="linear(to-r, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3))"
         >
           <Box
@@ -37,7 +38,7 @@ export default function Home() {
           >
             <Heading
               as="h1"
-              fontSize={{ base: "2.2vw", md: "3rem" }}
+              fontSize={"3rem"}
               color="white"
               mb={4}
               textAlign="center"
@@ -45,7 +46,7 @@ export default function Home() {
               Schedule your appointment
             </Heading>
             <Text
-              fontSize={{ base: "1rem", md: "1.5rem" }}
+              fontSize={"1.5rem"}
               color="white"
               mb={6}
               textAlign="center"
@@ -67,7 +68,7 @@ export default function Home() {
         p={8}
         borderRadius="lg"
         shadow="lg"
-        flex="1" // Allows the box to expand and push footer down
+        flex="1"
       >
         <Heading
           textAlign="center"

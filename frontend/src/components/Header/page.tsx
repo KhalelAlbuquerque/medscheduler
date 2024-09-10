@@ -1,18 +1,36 @@
 "use client";
 
 import { Box, Button, Link, List } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import logo from "../../../public/image/main-logo.png";
-import { BiMenu } from "react-icons/bi";
+import { BiMenu, BiX } from "react-icons/bi";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
-    console.log(isOpen);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <Box
@@ -62,7 +80,7 @@ const Header = () => {
 
       <Button
         h={"100%"}
-        className="block md:hidden"
+        className="flex md:hidden"
         cursor={"pointer"}
         onClick={handleOpen}
       >
@@ -71,18 +89,27 @@ const Header = () => {
 
       {isOpen && (
         <Box
-          display={{ base: "flex", md: "none" }}
-          className="flex md:hidden"
+          ref={menuRef} // Conectando o menuRef à caixa de menu
           position="absolute"
           top="80px"
-          left="0"
-          right="0"
+          className="bg-white p-4 rounded-b-lg shadow-t-lg z-10 w-[55%] sm:w-[40%] flex md:hidden"
+          right="10"
           bg="white"
-          p="20"
+          p="4"
           shadow="md"
-          boxSizing="border-box"
         >
-          <List className="flex flex-col gap-4">
+          <Button
+            position="absolute"
+            right="20px"
+            top="10px"
+            height={40}
+            width={40}
+            className="rounded-full bg-gray-200"
+            onClick={() => setIsOpen(false)}
+          >
+            <BiX className="w-full h-full" />
+          </Button>
+          <List className="flex flex-col gap-4 items-center w-full mt-[30px]">
             <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
               About us
             </Link>
@@ -90,7 +117,7 @@ const Header = () => {
               Doctors
             </Link>
             <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
-              Schedule
+              SchedListe
             </Link>
             <Link
               href="login"
