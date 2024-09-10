@@ -50,7 +50,7 @@ const Header = () => {
       display={"flex"}
       position={"fixed"}
       className="px-[20px] sm:px-[50px] md:px-[100px] 
-                  lg:px-[200px]"
+                  lg:px-[200px] shadow-xl"
       alignItems="center"
       bg="white"
       py={"10px"}
@@ -67,9 +67,6 @@ const Header = () => {
           </Link>
           <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
             Doctors
-          </Link>
-          <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
-            Schedule
           </Link>
         </Box>
         <Box display={"flex"} alignItems={"center"} gap={"1rem"}>
@@ -126,17 +123,14 @@ const Header = () => {
             <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
               Doctors
             </Link>
-            <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
-              Schedule
-            </Link>
             <Link
-              href="login"
+              href="/login"
               className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
             >
               Login
             </Link>
             <Link
-              href="signup"
+              href="/signup"
               className="cursor-pointer text-lg bg-[#0864FF] text-white font-semibold hover:bg-[#4d8fff] px-4 py-2 rounded-lg"
             >
               Sign Up

@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Link, Text } from "@chakra-ui/react";
 import bannerImg from "../../public/image/banner-home.jpg";
 import qualityOfLife from "../../public/image/quality-of-life.jpg";
 import reduceRisk from "../../public/image/reduce-risk.jpg";
@@ -23,6 +23,7 @@ export default function Home() {
           width="100%"
           height="100%"
           minHeight={600}
+          px={100}
           className="flex items-center"
           bgGradient="linear(to-r, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3))"
         >
@@ -54,9 +55,9 @@ export default function Home() {
             >
               Plan your visit with us quickly and easily!
             </Text>
-            <Button colorScheme="teal" size="lg" _hover={{ bg: "teal.600" }}>
+            <Link href="/doctors" className="font-medium text-xl text-white px-8 py-4 rounded-xl" bg={"teal"} _hover={{ bg: "teal.600" }}>
               Book Now
-            </Button>
+            </Link>
           </Box>
         </Box>
       </Box>
