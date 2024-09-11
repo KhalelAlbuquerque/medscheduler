@@ -62,7 +62,7 @@ const Header = () => {
 
       <List className=" hidden gap-[2rem] md:flex">
         <Box display={"flex"} alignItems={"center"} gap={"1rem"}>
-          <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
+          <Link href="/aboutus" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
             About us
           </Link>
           <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
@@ -87,7 +87,7 @@ const Header = () => {
 
       <Button
         h={"100%"}
-        className="flex md:hidden"
+        className="hidden md:hidden"
         cursor={"pointer"}
         onClick={handleOpen}
       >
@@ -117,7 +117,7 @@ const Header = () => {
             <BiX className="w-full h-full" />
           </Button>
           <List className="flex flex-col gap-4 items-center w-full mt-[30px]">
-            <Link className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
+            <Link href="/aboutus" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
               About us
             </Link>
             <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
