@@ -19,7 +19,7 @@ function DoctorFilter({
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }) {
   return (
-    <Box className="bg-white h-[450px] w-[400px] rounded-lg p-4" boxShadow="md">
+    <Box className="bg-white h-[450px] w-[400px] rounded-lg p-4 hidden sm:flex" boxShadow="md">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col justify-between h-full"

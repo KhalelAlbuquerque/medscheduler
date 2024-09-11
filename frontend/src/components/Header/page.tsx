@@ -87,7 +87,7 @@ const Header = () => {
 
       <Button
         h={"100%"}
-        className="hidden md:hidden"
+        className="flex md:hidden"
         cursor={"pointer"}
         onClick={handleOpen}
       >
