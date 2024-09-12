@@ -6,6 +6,7 @@ import longevity from "../../public/image/healthy-longevity.jpg";
 import { Image } from "@chakra-ui/react";
 
 export default function Home() {
+
   return (
     <Box className="flex flex-col min-h-screen">
       <Box
