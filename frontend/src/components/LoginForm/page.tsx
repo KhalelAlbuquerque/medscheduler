@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -36,7 +36,7 @@ const LoginForm = () => {
     if (signInResponse && !signInResponse.error){
       console.log("Login approved")
     }else{
-      console.log(JSON.parse(signInResponse?.error || "{}"));
+      console.error(JSON.parse(signInResponse?.error || "{}"));
     }
   }
 

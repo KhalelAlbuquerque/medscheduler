@@ -30,7 +30,10 @@ export const authConfig: NextAuthOptions = {
       
             if (data) {
               return {
-                id: data.id || "",
+                name: data.name || "Name test",
+                email: data.email || "email test",
+                picture: data.profPicUrl || "Picture test",
+                id: data._id || "id test",
                 token: data.token
               };
             }
@@ -43,4 +46,19 @@ export const authConfig: NextAuthOptions = {
       }
     }),
   ],
+  callbacks: {
+    jwt({user, token}){
+        if(user) {
+          token.user=user
+        }
+
+        return token
+    },
+    session({session,token}){
+        // session.user = token.user
+        // session.expires = `${(new Date(token.exp)).toISOString()}`
+        // console.log(session)
+        return session
+    }
+},
 };
