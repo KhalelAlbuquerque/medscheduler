@@ -1,5 +1,6 @@
 'use client'
 
+import api from "@/config/axios";
 import {
   Box,
   FormControl,
@@ -8,8 +9,9 @@ import {
   Heading,
   Button,
 } from "@chakra-ui/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -23,9 +25,19 @@ const LoginForm = () => {
     setPassword(event.currentTarget.value);
   }
 
-  function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
     event.preventDefault()
-    // setToken("alskd", 1000)
+    const signInResponse = await signIn("credentials", {
+      email,
+      password,
+      redirect: false
+    }) 
+
+    if (signInResponse && !signInResponse.error){
+      console.log("Login approved")
+    }else{
+      console.log(JSON.parse(signInResponse?.error || "{}"));
+    }
   }
 
   return (
