@@ -7,11 +7,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PatientModule } from './patient/patient.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { AuthModule } from './auth/auth.module';
+import { ImageService } from './image/image.service';
+import { ImageController } from './image/image.controller';
+import { FirebaseService } from './config/firebase.config';
 
 @Module({
   imports: [
     DoctorModule,
-    ConfigModule.forRoot({
+    ConfigModule.forRoot({ 
       isGlobal: true,
       envFilePath: ".env"
     }),
@@ -20,7 +23,7 @@ import { AuthModule } from './auth/auth.module';
     AppointmentModule,
     AuthModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ImageController],
+  providers: [AppService, ImageService, FirebaseService],
 })
 export class AppModule {}
