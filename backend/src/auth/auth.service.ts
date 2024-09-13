@@ -7,15 +7,7 @@ import { Role } from './enum/roles.enum';
 import * as bcrypt from "bcrypt"
 import { CreatePatientDto } from 'src/patient/dto/create-patient.dto';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
-
-interface AuthData{
-    token:string,
-    email: string,
-    name: string,
-    id: string,
-    // picture: patient.image || 
-    picture: string
-}
+import { AuthData } from 'src/interfaces/authInterface';
 
 @Injectable()
 export class AuthService {
