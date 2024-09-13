@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { FirebaseService } from '../config/firebase/firebase.config';
+import { FirebaseService } from '../config/firebase.config';
 import { v4 as uuidv4 } from 'uuid';
 
-@Injectable()
+@Injectable() 
 export class ImageService {
   private readonly logger = new Logger(ImageService.name);
 
@@ -13,7 +13,7 @@ export class ImageService {
     const fileName = `${uuidv4()}_${file.originalname}`;
 
     const blob = bucket.file(fileName);
-    const blobStream = blob.createWriteStream({
+    const blobStream = await blob.createWriteStream({
       metadata: {
         contentType: file.mimetype,
       },

@@ -8,7 +8,7 @@ export class FirebaseService {
   private bucket;
 
   constructor(private configService: ConfigService) {
-    const serviceAccount: ServiceAccount = require('./firebase-credentials.json');
+    const serviceAccount: ServiceAccount = require("../../firebase-credentials.json");
 
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),

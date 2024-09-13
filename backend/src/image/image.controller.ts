@@ -12,12 +12,12 @@ export class ImageController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', multerOptions))
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    this.logger.log('Received file:', file);
+    // this.logger.log('Received file:', file);
 
     if (!file || !file.buffer) {
       this.logger.error('No file or file buffer is empty');
       return { error: 'No file uploaded or file buffer is empty' };
-    }
+    } 
 
     try {
       const url = await this.imageService.uploadImage(file);
