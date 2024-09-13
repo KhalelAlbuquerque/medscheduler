@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import api from "./axios";
 
@@ -30,10 +30,10 @@ export const authConfig: NextAuthOptions = {
       
             if (data) {
               return {
-                name: data.name || "Name test",
-                email: data.email || "email test",
-                picture: data.profPicUrl || "Picture test",
-                id: data._id || "id test",
+                name: data.name,
+                email: data.email,
+                picture: data.picture,
+                id: data.id,
                 token: data.token
               };
             }
@@ -47,18 +47,20 @@ export const authConfig: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt({user, token}){
-        if(user) {
-          token.user=user
-        }
-
-        return token
+    jwt({ user, token }) {
+      if (user) {
+        token.user = user;
+        token.picture = user.picture
+      }
+  
+      console.log(token); 
+  
+      return token;
     },
-    session({session,token}){
-        // session.user = token.user
-        // session.expires = `${(new Date(token.exp)).toISOString()}`
-        // console.log(session)
-        return session
-    }
-},
+    session({ session, token }) {
+      session.user = token.user as User;
+      session.user.image = token.picture;
+      return session;
+    },
+  }
 };
