@@ -3,6 +3,9 @@
 /node_modules
 /build
 
+# Firebase
+./firebase-credentials.json
+
 # Logs
 logs
 *.log
