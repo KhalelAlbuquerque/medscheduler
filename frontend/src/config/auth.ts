@@ -52,9 +52,7 @@ export const authConfig: NextAuthOptions = {
         token.user = user;
         token.picture = user.picture
       }
-  
-      console.log(token); 
-  
+      
       return token;
     },
     session({ session, token }) {
