@@ -9,7 +9,7 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { AuthModule } from './auth/auth.module';
 import { ImageService } from './image/image.service';
 import { ImageController } from './image/image.controller';
-import { FirebaseService } from './config/firebase.config';
+import { FirebaseService } from './config/firebase/firebase.config';
 
 @Module({
   imports: [

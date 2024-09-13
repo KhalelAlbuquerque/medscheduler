@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { FirebaseService } from '../config/firebase.config';
+import { FirebaseService } from '../config/firebase/firebase.config';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
