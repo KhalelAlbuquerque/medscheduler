@@ -8,6 +8,15 @@ import * as bcrypt from "bcrypt"
 import { CreatePatientDto } from 'src/patient/dto/create-patient.dto';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 
+interface AuthData{
+    token:string,
+    email: string,
+    name: string,
+    id: string,
+    // picture: patient.image || 
+    picture: string
+}
+
 @Injectable()
 export class AuthService {
     constructor(private readonly patientService: PatientService,
@@ -15,7 +24,7 @@ export class AuthService {
                 private readonly jwtService: JwtService){}
 
 
-    async patientLogin(loginDto: loginDto) : Promise<{token:string}>{
+    async patientLogin(loginDto: loginDto) : Promise<AuthData>{
         const {email, password} = loginDto
 
         const patient = await this.patientService.findByEmail(email)
@@ -28,10 +37,19 @@ export class AuthService {
 
         const token = this.jwtService.sign({id: patient._id, role: Role.PATIENT})
 
-        return {token}
+        const dataToReturn = {
+            token,
+            email: patient.email,
+            name: patient.name,
+            id: patient._id,
+            // picture: patient.image || 
+            picture: 'testUrl' 
+        } as AuthData
+
+        return dataToReturn
     }
 
-    async doctorLogin(loginDto: loginDto) : Promise<{token:string}>{
+    async doctorLogin(loginDto: loginDto) : Promise<AuthData>{
         const {email, password} = loginDto
 
         const doctor = await this.doctorService.findByEmail(email)
@@ -44,26 +62,53 @@ export class AuthService {
 
         const token = this.jwtService.sign({id: doctor._id, role: Role.DOCTOR})
 
-        return {token}
+        const dataToReturn = {
+            token,
+            email: doctor.email,
+            name: doctor.name,
+            id: doctor._id,
+            // picture: doctor.image || 
+            picture: 'testUrl' 
+        } as AuthData
+
+        return dataToReturn
     }
 
-    async patientRegister(createPatientDto: CreatePatientDto): Promise<{token:string}>{
+    async patientRegister(createPatientDto: CreatePatientDto): Promise<AuthData>{
         const newPatient = await this.patientService.create(createPatientDto)
 
         if(newPatient){
             const token = this.jwtService.sign({id: newPatient._id, role: Role.PATIENT})
 
-            return {token}
+            const dataToReturn = {
+                token,
+                email: newPatient.email,
+                name: newPatient.name,
+                id: newPatient._id,
+                // picture: patient.image || 
+                picture: 'testUrl' 
+            } as AuthData
+
+            return dataToReturn
         }
     }
 
-    async doctorRegister(createDoctorDto: CreateDoctorDto): Promise<{token:string}>{
+    async doctorRegister(createDoctorDto: CreateDoctorDto): Promise<AuthData>{
         const newDoctor = await this.doctorService.create(createDoctorDto)
 
         if(newDoctor){
             const token = this.jwtService.sign({id: newDoctor._id, role: Role.DOCTOR})
 
-            return {token}
+            const dataToReturn = {
+                token,
+                email: newDoctor.email,
+                name: newDoctor.name,
+                id: newDoctor._id,
+                // picture: doctor.image || 
+                picture: 'testUrl' 
+            } as AuthData
+
+            return dataToReturn
         }
     }
 
