@@ -20,15 +20,14 @@ function AboutUs() {
       direction={"column"}
       justifyContent={"center"}
       alignItems={"center"}
-      className="mt-4"
-      p={8}
+      className="mt-4 p-0 md:p-8"
     >
       <Stack
-        className="w-[60%] px-40 py-10 h-full"
+        className="w-[90%] lg:w-[70%] px-4 md:px-20 lg-px-40 py-10 h-full"
         bg="white"
         rounded="lg"
         shadow="2xl"
-        spacing={12}
+        spacing={{base: 8, md: 12}}
       >
         <Box textAlign="center">
           <Heading fontSize="4xl" color="teal.500" mb={4}>
@@ -46,20 +45,19 @@ function AboutUs() {
             alt="Healthcare connection"
             rounded="lg"
             shadow="md"
-            className="mx-auto"
-            mb={6}
+            className="mx-auto md:mb-6"
           />
         </Box>
 
         <Divider />
 
         <Box>
-          <Heading fontSize="3xl" color="teal.500" mb={4}>
+          <Heading fontSize="3xl" color="teal.500" className="mb-6 md:mb-4">
             What We Do
           </Heading>
-          <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-            <GridItem>
-              <FaHeartbeat className="fill-teal-600 mb-2 w-10 h-10" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <GridItem className="w-[60%] m-auto text-center md:w-auto md:m-0 md:text-start">
+              <FaHeartbeat className="fill-teal-600 m-auto md:m-0 mb-2 w-10 h-10" />
               <Text fontWeight="bold" fontSize="lg" color="gray.700">
                 Browse Providers
               </Text>
@@ -69,8 +67,8 @@ function AboutUs() {
               </Text>
             </GridItem>
 
-            <GridItem>
-              <FaUserMd className="fill-teal-600 mb-2 w-10 h-10" />
+            <GridItem className="w-[60%] m-auto text-center md:w-auto md:m-0 md:text-start">
+              <FaUserMd  className="fill-teal-600 m-auto md:m-0 mb-2 w-10 h-10" />
               <Text fontWeight="bold" fontSize="lg" color="gray.700">
                 Schedule Appointments
               </Text>
@@ -80,8 +78,8 @@ function AboutUs() {
               </Text>
             </GridItem>
 
-            <GridItem>
-              <FaShieldAlt className="fill-teal-600 mb-2 w-10 h-10" />
+            <GridItem className="w-[60%] m-auto text-center md:w-auto md:m-0 md:text-start">
+              <FaShieldAlt  className="fill-teal-600 m-auto md:m-0 mb-2 w-10 h-10" />
               <Text fontWeight="bold" fontSize="lg" color="gray.700">
                 Manage Your Health
               </Text>
@@ -90,7 +88,7 @@ function AboutUs() {
                 dashboard.
               </Text>
             </GridItem>
-          </Grid>
+          </div>
         </Box>
 
         <Divider />

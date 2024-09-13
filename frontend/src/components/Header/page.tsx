@@ -1,16 +1,19 @@
 "use client";
 
-import { Box, Button, Link, List } from "@chakra-ui/react";
+import { Box, Button, Link, List, Text } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import logo from "../../../public/image/main-logo.png";
-import { BiMenu, BiX } from "react-icons/bi";
+import { BiMenu, BiUser, BiX } from "react-icons/bi";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+import { FaUserCircle } from "react-icons/fa";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const pathname = usePathname();
+  const { status, data } = useSession();
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -42,6 +45,11 @@ const Header = () => {
     };
   }, [isOpen, pathname]);
 
+  useEffect(() => {
+    console.log(status);
+    console.log(data);
+  }, [status]);
+
   return (
     <Box
       zIndex={99}
@@ -62,26 +70,51 @@ const Header = () => {
 
       <List className=" hidden gap-[2rem] md:flex">
         <Box display={"flex"} alignItems={"center"} gap={"1rem"}>
-          <Link href="/aboutus" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
+          <Link
+            href="/aboutus"
+            className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+          >
             About us
           </Link>
-          <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
+          <Link
+            href="/doctors"
+            className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+          >
             Doctors
           </Link>
         </Box>
         <Box display={"flex"} alignItems={"center"} gap={"1rem"}>
-          <Link
-            href="login"
-            className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
-          >
-            Login
-          </Link>
-          <Link
-            href="signup"
-            className="cursor-pointer text-lg bg-[#0864FF] text-white font-semibold hover:bg-[#4d8fff] px-4 py-2 rounded-lg"
-          >
-            Sign Up
-          </Link>
+          {status === "authenticated" ? (
+            <Box
+              width={"70px"}
+              h={"100%"}
+              className="flex items-center justify-center"
+            >
+              <Button
+                bg={"none"}
+                height={"fit"}
+                width={"100%"}
+                _hover={{ bg: "none" }}
+              >
+                <FaUserCircle fill="#0864FF" className="h-full w-full" />
+              </Button>
+            </Box>
+          ) : (
+            <>
+              <Link
+                href="login"
+                className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+              >
+                Login
+              </Link>
+              <Link
+                href="signup"
+                className="cursor-pointer text-lg bg-[#0864FF] text-white font-semibold hover:bg-[#4d8fff] px-4 py-2 rounded-lg"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </Box>
       </List>
 
@@ -105,36 +138,74 @@ const Header = () => {
           p="4"
           shadow="md"
         >
-          <Button
-            position="absolute"
-            right="20px"
-            top="10px"
-            height={40}
-            width={40}
-            className="rounded-full bg-gray-200"
+          <BiX
+            className="rounded-full bg-gray-200 absolute right-[20px] top-[10px] h-[40px] w-[40px] cursor-pointer"
             onClick={() => setIsOpen(false)}
-          >
-            <BiX className="w-full h-full" />
-          </Button>
+          />
+
           <List className="flex flex-col gap-4 items-center w-full mt-[30px]">
-            <Link href="/aboutus" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
-              About us
-            </Link>
-            <Link href="/doctors" className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]">
-              Doctors
-            </Link>
-            <Link
-              href="/login"
-              className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="cursor-pointer text-lg bg-[#0864FF] text-white font-semibold hover:bg-[#4d8fff] px-4 py-2 rounded-lg"
-            >
-              Sign Up
-            </Link>
+            {status === "authenticated" ? (
+              <>
+                <Text>Welcome, <strong>{data.user.name}</strong></Text>
+                <Link
+                  href="#"
+                  className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+                >
+                  Profile
+                </Link>
+                <Link
+                  href="#"
+                  className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+                >
+                  Doctors
+                </Link>
+                <Link
+                  href="#"
+                  className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+                >
+                  My Schedule
+                </Link>
+                <Link
+                  href="/aboutus"
+                  className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+                >
+                  About Us
+                </Link>
+                <Button
+                  onClick={()=>signOut()}
+                  className="cursor-pointer text-lg bg-[#0864FF] text-white font-semibold hover:bg-[#4d8fff] px-4 py-2 rounded-lg"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/aboutus"
+                  className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+                >
+                  About us
+                </Link>
+                <Link
+                  href="/doctors"
+                  className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+                >
+                  Doctors
+                </Link>
+                <Link
+                  href="/login"
+                  className="cursor-pointer text-lg font-semibold text-[#0864FF] hover:text-[#4d8fff]"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="cursor-pointer text-lg bg-[#0864FF] text-white font-semibold hover:bg-[#4d8fff] px-4 py-2 rounded-lg"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </List>
         </Box>
       )}
