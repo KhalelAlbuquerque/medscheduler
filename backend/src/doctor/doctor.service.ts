@@ -5,14 +5,18 @@ import * as bcrypt from "bcrypt"
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Doctor } from './schemas/doctor.schema';
+import { ImageService } from 'src/image/image.service';
 
 @Injectable()
 export class DoctorService {
 
-  constructor(@InjectModel(Doctor.name) private readonly doctorModel: Model<Doctor>) {}
+  constructor(
+    @InjectModel(Doctor.name) private readonly doctorModel: Model<Doctor>,
+    private imageService: ImageService
+) {}
 
-  async create(createDoctorDto: CreateDoctorDto) : Promise<Doctor> {
-
+  async create(createDoctorDto: CreateDoctorDto, picture: Express.Multer.File) : Promise<Doctor> {
+ 
     const {med_code, email} = createDoctorDto
 
     const matchedMedCode = await this.doctorModel.findOne({med_code}).exec()
@@ -22,7 +26,10 @@ export class DoctorService {
 
     const hashedPassword = await bcrypt.hash(createDoctorDto.password, 10)
 
+    const profileUrl = await this.imageService.uploadImage(picture)
+
     createDoctorDto.password = hashedPassword
+    createDoctorDto.picture = profileUrl
 
     const newDoctor = await this.doctorModel.create(createDoctorDto)
 
@@ -49,7 +56,7 @@ export class DoctorService {
     return foundDoctor
   }
 
-  async update(id: string, updateDoctorDto: UpdateDoctorDto) : Promise<Doctor>{
+  async update(id: string, updateDoctorDto: UpdateDoctorDto, picture:Express.Multer.File | undefined | null) : Promise<Doctor>{
     const foundDoctor = await this.findOne(id)
 
     if(updateDoctorDto?.email) foundDoctor.email = updateDoctorDto.email
@@ -57,6 +64,12 @@ export class DoctorService {
     if(updateDoctorDto?.name) foundDoctor.name = updateDoctorDto.name
     if(updateDoctorDto?.speciality) foundDoctor.speciality = updateDoctorDto.speciality
     if(updateDoctorDto?.phoneNumber) foundDoctor.phoneNumber = updateDoctorDto.phoneNumber
+
+    if(picture) {
+      foundDoctor.picture = await this.imageService.uploadImage(picture)
+    }else{
+      foundDoctor.picture = foundDoctor.picture
+    }
 
     await foundDoctor.save()
 

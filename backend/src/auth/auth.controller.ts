@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { loginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { CreatePatientDto } from 'src/patient/dto/create-patient.dto';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -10,12 +11,13 @@ export class AuthController {
 
     @Post("login/patient")
     async patientLogin(@Body() loginDto: loginDto) {
-        return await this.authService.patientLogin(loginDto)
+        return await this.authService.patientLogin(loginDto) 
     }
 
     @Post("register/patient")
-    async patientRegister(@Body() createPatientDto: CreatePatientDto) {
-        return await this.authService.patientRegister(createPatientDto)
+    @UseInterceptors(FileInterceptor('picture')) 
+    async patientRegister(@Body() createPatientDto: CreatePatientDto, @UploadedFile() picture: Express.Multer.File | null | undefined) {
+        return await this.authService.patientRegister(createPatientDto, picture)
     }
 
     @Post("login/doctor")
@@ -24,7 +26,8 @@ export class AuthController {
     }
 
     @Post("register/doctor")
-    async doctorRegister(@Body() createDoctorDto: CreateDoctorDto) {
-        return await this.authService.doctorRegister(createDoctorDto)
+    @UseInterceptors(FileInterceptor('picture')) 
+    async doctorRegister(@Body() createDoctorDto: CreateDoctorDto, @UploadedFile() picture: Express.Multer.File | null | undefined) {
+        return await this.authService.doctorRegister(createDoctorDto, picture)
     }
 }

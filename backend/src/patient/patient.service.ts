@@ -7,15 +7,17 @@ import { Patient } from './schemas/patient.schema';
 import * as bcrypt from "bcrypt"
 import { CreateAppointmentDto } from 'src/appointment/dto/create-appointment.dto';
 import { Appointment } from 'src/appointment/schemas/appointment.schema';
+import { ImageService } from 'src/image/image.service';
 
 @Injectable()
 export class PatientService {
   constructor(
     @InjectModel(Patient.name) private readonly patientModel:Model<Patient>,
-    @InjectModel(Appointment.name) private readonly appointmentModel:Model<Appointment>
+    @InjectModel(Appointment.name) private readonly appointmentModel:Model<Appointment>,
+    private imageService:ImageService
   ){}
 
-  async create(createPatientDto: CreatePatientDto) : Promise<Patient> {
+  async create(createPatientDto: CreatePatientDto, file: Express.Multer.File) : Promise<Patient> {
     const {email, ssnOrCpf} = createPatientDto
 
     const matchedEmail = await this.patientModel.findOne({email}).exec()
@@ -23,12 +25,15 @@ export class PatientService {
 
     if(matchedEmail || matchedSSN) throw new BadRequestException("Duplicated email or SSN/CPF")
 
+    const profileUrl = await this.imageService.uploadImage(file)
+
     const hashedPassword = await bcrypt.hash(createPatientDto.password, 10)
 
-    createPatientDto.password = hashedPassword
+    createPatientDto.password = hashedPassword 
+    createPatientDto.picture = profileUrl
 
     const newPatient = await this.patientModel.create(createPatientDto)
-
+    
     return newPatient
   }
 
@@ -52,7 +57,7 @@ export class PatientService {
     return foundPatient
   }
 
-  async update(id: string, updatePatientDto: UpdatePatientDto) : Promise<Patient> {
+  async update(id: string, updatePatientDto: UpdatePatientDto, picture:Express.Multer.File | undefined | null) : Promise<Patient> {
     const patient: Patient = await this.findOne(id)
 
     if(updatePatientDto?.email) patient.email = updatePatientDto.email
@@ -60,6 +65,13 @@ export class PatientService {
     if(updatePatientDto?.name) patient.name = updatePatientDto.name
     if(updatePatientDto?.phoneNumber) patient.phoneNumber = updatePatientDto.phoneNumber
 
+    if(picture) {
+      console.log(picture)
+      patient.picture = await this.imageService.uploadImage(picture) 
+    }else{
+      patient.picture = patient.picture
+    }
+    
     return await patient.save()
   }
 

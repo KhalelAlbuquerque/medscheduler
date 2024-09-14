@@ -35,7 +35,7 @@ export class AuthService {
             name: patient.name,
             id: patient._id,
             // picture: patient.image || 
-            picture: 'testUrl' 
+            picture: patient.picture 
         } as AuthData
 
         return dataToReturn
@@ -60,14 +60,14 @@ export class AuthService {
             name: doctor.name,
             id: doctor._id,
             // picture: doctor.image || 
-            picture: 'testUrl' 
+            picture: doctor.picture 
         } as AuthData
 
         return dataToReturn
     }
 
-    async patientRegister(createPatientDto: CreatePatientDto): Promise<AuthData>{
-        const newPatient = await this.patientService.create(createPatientDto)
+    async patientRegister(createPatientDto: CreatePatientDto, picture: Express.Multer.File): Promise<AuthData>{
+        const newPatient = await this.patientService.create(createPatientDto, picture)
 
         if(newPatient){
             const token = this.jwtService.sign({id: newPatient._id, role: Role.PATIENT})
@@ -78,15 +78,15 @@ export class AuthService {
                 name: newPatient.name,
                 id: newPatient._id,
                 // picture: patient.image || 
-                picture: 'testUrl' 
+                picture: newPatient.picture 
             } as AuthData
 
             return dataToReturn
         }
     }
 
-    async doctorRegister(createDoctorDto: CreateDoctorDto): Promise<AuthData>{
-        const newDoctor = await this.doctorService.create(createDoctorDto)
+    async doctorRegister(createDoctorDto: CreateDoctorDto, picture: Express.Multer.File): Promise<AuthData>{
+        const newDoctor = await this.doctorService.create(createDoctorDto, picture)
 
         if(newDoctor){
             const token = this.jwtService.sign({id: newDoctor._id, role: Role.DOCTOR})
@@ -96,8 +96,7 @@ export class AuthService {
                 email: newDoctor.email,
                 name: newDoctor.name,
                 id: newDoctor._id,
-                // picture: doctor.image || 
-                picture: 'testUrl' 
+                picture: newDoctor.picture 
             } as AuthData
 
             return dataToReturn

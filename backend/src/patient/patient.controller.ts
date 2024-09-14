@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
@@ -7,14 +7,16 @@ import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/enum/roles.enum';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('patient')
 export class PatientController {
   constructor(private readonly patientService: PatientService) {}
 
   @Post()
-  create(@Body() createPatientDto: CreatePatientDto) {
-    return this.patientService.create(createPatientDto);
+  @UseInterceptors(FileInterceptor('picture')) 
+  create(@Body() createPatientDto: CreatePatientDto, @UploadedFile() picture: Express.Multer.File | undefined | null) {
+    return this.patientService.create(createPatientDto, picture);
   }
 
   @Get()
@@ -28,8 +30,9 @@ export class PatientController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
-    return this.patientService.update(id, updatePatientDto);
+  @UseInterceptors(FileInterceptor('picture')) 
+  update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto, picture:Express.Multer.File | undefined | null) {
+    return this.patientService.update(id, updatePatientDto, picture);
   }
 
   @Delete(':id')

@@ -26,6 +26,10 @@ export class CreateDoctorDto {
     @IsNotEmpty()
     med_code: string
 
+    @IsString()
+    @IsNotEmpty()
+    picture:string
+
     @IsEmpty()
     role: string
 }

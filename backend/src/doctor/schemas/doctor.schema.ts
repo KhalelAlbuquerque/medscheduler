@@ -16,7 +16,10 @@ export class Doctor extends Document{
     speciality: string;
 
     @Prop({unique: true})
-    med_code: string
+    med_code: string 
+
+    @Prop()
+    picture: string
 
     @Prop()
     phoneNumber: string

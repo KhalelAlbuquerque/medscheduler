@@ -17,6 +17,9 @@ export class Patient extends Document {
 
     @Prop({unique: true})
     ssnOrCpf: string
+    
+    @Prop()
+    picture: string
 
     @Prop({default: "patient"})
     role: string

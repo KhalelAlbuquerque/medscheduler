@@ -5,17 +5,20 @@ import { ServiceAccount } from 'firebase-admin';
 
 @Injectable()
 export class FirebaseService {
+  private static firebaseApp: admin.app.App;
   private bucket;
 
   constructor(private configService: ConfigService) {
-    const serviceAccount: ServiceAccount = require("../../firebase-credentials.json");
+    if (!FirebaseService.firebaseApp) {
+      const serviceAccount: ServiceAccount = require("../../firebase-credentials.json");
 
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      storageBucket: this.configService.get<string>('FIREBASE_BUCKET_URL'),
-    });
+      FirebaseService.firebaseApp = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        storageBucket: this.configService.get<string>('FIREBASE_BUCKET_URL'),
+      });
+    }
 
-    this.bucket = admin.storage().bucket();
+    this.bucket = FirebaseService.firebaseApp.storage().bucket();
   }
 
   public getBucket() {
